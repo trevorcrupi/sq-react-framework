@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { StateProvider } from 'state';
+import Navigation from './components/layout/Navigation';
+import 'assets/custom-styles.css';
 
 function App() {
+  const initialState = {
+    demo: {
+      demoList: [],
+      value: 0
+    }
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'changeValue':
+        return {
+          ...state,
+          value: action.value
+        };
+
+      default:
+        return state;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <div className='App'>
+        <Navigation />
+      </div>
+    </StateProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from '@reach/router';
 import { useModel } from 'lib/hooks';
 import { Post } from 'lib/models';
 
@@ -10,7 +11,7 @@ export const PostsTable = props => {
         posts = postCollection.map((post) => {
             const link = '/post/' + post.id;
             return (
-                <li><a href={link}>{post.title}</a></li>
+                <li><Link to={link}>{post.title}</Link></li>
             );
         });
     }

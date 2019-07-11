@@ -56,6 +56,46 @@ export default class LowDriver {
         return this.db.get(payload.table).find(payload.query).value();
     }
 
+    /*
+    {
+        table: 'posts',
+        query: {
+            id: 'some-uuid-or-whatever'
+        },
+        update: {
+            title: 'brand new title'
+        }
+    }
+    */
+    update(payload) {
+        if(!payload.table) {
+            throw new Error('No table specified in payload');
+        }
+
+        if(payload.table === 'user') {
+            return this.db.set(payload.table + '.' + payload.query, payload.update).value();
+        }
+
+        this.db.get(payload.table).find(payload.query).assign(payload.update).write();
+        return this.db.get(payload.table).find(payload.query).value();
+    }
+
+    /*
+    {
+        table: 'posts',
+        delete: {
+            title: 'brand new title'
+        }
+    }
+    */
+    delete(payload) {
+        if(!payload.table) {
+            throw new Error('No table specified in payload');
+        }
+
+        return this.db.get(payload.table).remove(payload.delete).write();
+    }
+
     getAllPosts() {
         return this.db.get('posts').value();
     }

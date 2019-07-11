@@ -29,6 +29,14 @@ const dataReducer = (state, action) => {
                 newState = { ...state };
                 newState[model] = action.value;
                 return newState;
+            case 'update':
+                newState = { ...state };
+                newState[model] = action.value;
+                return newState;
+            case 'delete':
+                newState = { ...state };
+                newState[model] = action.value;
+                return newState;
             default:
                 throw new Error(JSON.stringify(action));
         }

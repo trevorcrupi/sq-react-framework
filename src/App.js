@@ -3,32 +3,23 @@ import { StateProvider } from 'state';
 import Navigation from './components/layout/Navigation';
 import 'assets/custom-styles.css';
 
+import { Model } from 'lib/framework/context';
+import { useModel } from 'lib/hooks';
+import { User } from 'lib/models';
+
 function App() {
-  const initialState = {
-    demo: {
-      demoList: [],
-      value: 0
-    }
-  };
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'changeValue':
-        return {
-          ...state,
-          value: action.value
-        };
-
-      default:
-        return state;
-    }
-  };
+  const { user, dispatch } = useModel('User', new User({
+    email: 'tcrupi@purdue.edu',
+    name: 'Trevor Crupi'
+  }).read({ table: 'user' }));
 
   return (
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <div className='App'>
-        <Navigation />
-      </div>
+    <StateProvider>
+      <Model.Provider value={dispatch}>
+        <div className='App'>
+          <Navigation user={user} />
+        </div>
+      </Model.Provider>
     </StateProvider>
   );
 }

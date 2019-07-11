@@ -11,7 +11,7 @@ export const PostsTable = props => {
         posts = postCollection.map((post) => {
             const link = '/post/' + post.id;
             return (
-                <li><Link to={link}>{post.title}</Link></li>
+                <li key={post.id}><Link to={link} user={props.user}>{post.get('title')}</Link></li>
             );
         });
     }

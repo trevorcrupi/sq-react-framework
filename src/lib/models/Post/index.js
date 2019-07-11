@@ -9,10 +9,10 @@ export default class Post extends Model {
             driver: 'local', 
             schema: {
                 id: ['generate:uuid', post.id],
-                title: ['string', post.title],
-                author: ['number', post.author],
-                date: ['string', post.date],
-                text: ['string', post.text]
+                title: ['dynamic', post.title],
+                author: ['dynamic', post.author],
+                date: ['dynamic', post.date],
+                text: ['dynamic', post.text]
             }
         });
     }
@@ -43,5 +43,9 @@ export default class Post extends Model {
             type: ['model', 'PostCollection', 'read'],
             value: posts
         }).ready();
+    }
+
+    get(value) {
+        return this[value] ? this[value] : '...';
     }
 }

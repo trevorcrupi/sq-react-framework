@@ -21,7 +21,9 @@ export default class Model {
         try {
             const { cargo, callback } = this.prepare(payload);
             const createData = this.model.driver.create(cargo);
-            this.hydrate(createData).set();
+            if(createData) {
+                this.hydrate(createData).set();
+            }
 
             if(callback) {
                 //const plugins = plugins || [];
@@ -42,7 +44,9 @@ export default class Model {
         try {
             const { cargo, callback } = this.prepare(payload);
             const readData = this.model.driver.read(cargo);
-            this.hydrate(readData).set();
+            if(readData) {
+                this.hydrate(readData).set();
+            }
 
             if(callback) {
                 //const plugins = plugins || [];
@@ -53,6 +57,37 @@ export default class Model {
             return new ActionGenerator({
                 type: ['model', this.model.name, this.read.name],
                 value: this
+            }).ready();
+        } catch(err) {
+            throw new Error(err);
+        }
+    }
+
+    update(payload) {
+        try {
+            const { cargo } = this.prepare(payload);
+            const updateData = this.model.driver.update(cargo);
+            if(updateData) {
+                this.hydrate(updateData).set();
+            }
+
+            return new ActionGenerator({
+                type: ['model', this.model.name, this.update.name],
+                value: this
+            }).ready();
+        } catch(err) {
+            throw new Error(err);
+        }
+    }
+
+    delete(payload) {
+        try {
+            const { cargo } = this.prepare(payload);
+            this.model.driver.delete(cargo);
+
+            return new ActionGenerator({
+                type: ['model', this.model.name, this.update.name],
+                value: { deleted: true }
             }).ready();
         } catch(err) {
             throw new Error(err);

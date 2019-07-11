@@ -1,11 +1,9 @@
-import React, { memo, } from 'react';
-import { useModel } from 'lib/hooks';
-
+import React, { memo, useContext } from 'react';
 import { AddPostForm } from 'components/forms';
-import { User } from 'lib/models';
+import { Model } from 'lib/framework/context';
 
 export const AddPost = memo(props => {
-    const { user, dispatch } = useModel('User', new User({}).read({ table: 'user' }));
+    const dispatch = useContext(Model);
 
     const addPost = post => {
         if(post.id) {
@@ -14,6 +12,6 @@ export const AddPost = memo(props => {
     }
 
     return (
-        <AddPostForm user={user} addPost={addPost} />
+        <AddPostForm user={props.user} addPost={addPost} defaults={{ title: '', date: '', text: ''}} navigate={props.navigate} />
     );
 });

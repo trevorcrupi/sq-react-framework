@@ -12,7 +12,7 @@ export default function useModel(model, modelCallback) {
         return () => {
             console.log('Cleaned up.');
         }
-    }, []);
+    }, [modelCallback]);
 
     modelObjectPayload[model.charAt(0).toLowerCase() + model.slice(1)] = state[model];
     modelObjectPayload.state    = state;

@@ -1,5 +1,4 @@
 import Model from 'lib/framework/Model';
-import ActionGenerator from 'lib/framework/Model/ActionGenerator';
 
 export default class User extends Model {
 
@@ -22,7 +21,7 @@ export default class User extends Model {
                 id: this.id,
                 email: this.email,
                 name: this.name
-            },  
+            },
             callback,
             plugins
         });

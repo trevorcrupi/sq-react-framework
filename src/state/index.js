@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import * as initialState from './initialState';
-import { mainReducer } from './mainReducer';
+// import { mainReducer } from './mainReducer';
 
 export const StateContext = createContext();
 

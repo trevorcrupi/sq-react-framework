@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 
 import { Post } from 'lib/models';
 import { useForm } from 'lib/hooks';
-import uuid from 'uuidv4';
 
 export const AddPostForm = props => {
     const onSubmit = (inputs) => {

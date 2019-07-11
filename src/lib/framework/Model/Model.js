@@ -4,7 +4,7 @@ import Hydrator from './Hydrator';
 
 // Import Drivers and Plugins from config
 import drivers from 'config/drivers';
-import plugins from 'config/plugins';
+// import plugins from 'config/plugins';
 
 export default class Model {
 
@@ -19,7 +19,7 @@ export default class Model {
 
     create(payload) {
         try {
-            const { cargo, callback, plugins } = this.prepare(payload);
+            const { cargo, callback } = this.prepare(payload);
             const createData = this.model.driver.create(cargo);
             this.hydrate(createData).set();
 
@@ -40,7 +40,7 @@ export default class Model {
 
     read(payload) {
         try {
-            const { cargo, callback, plugins } = this.prepare(payload);
+            const { cargo, callback } = this.prepare(payload);
             const readData = this.model.driver.read(cargo);
             this.hydrate(readData).set();
 
@@ -88,7 +88,7 @@ export default class Model {
         if(!driver) {
             return this.model.driver;
         }
-        
+
         return drivers[driver];
     }
 

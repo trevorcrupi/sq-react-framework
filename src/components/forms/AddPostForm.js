@@ -6,7 +6,7 @@ import { useForm } from 'lib/hooks';
 export const AddPostForm = props => {
     const onSubmit = (inputs) => {
         props.addPost(new Post({
-            author: props.user.id,
+            author: props.user,
             title: inputs.title,
             date: inputs.date,
             text: inputs.text

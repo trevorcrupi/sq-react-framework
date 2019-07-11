@@ -11,7 +11,7 @@ export default class Model {
     constructor(model) {
         this.model = {};
         this.model.name   = model.model;
-        this.model.driver = drivers[model.driver];
+        this.model.driver = model.driver;
         this.model.schema = new Schema(this.model.name, model.schema);
         // Initialize model
         this.set();
@@ -20,7 +20,7 @@ export default class Model {
     create(payload) {
         try {
             const { cargo, callback } = this.prepare(payload);
-            const createData = this.model.driver.create(cargo);
+            const createData = drivers[this.model.driver].create(cargo);
             if(createData) {
                 this.hydrate(createData).set();
             }
@@ -43,7 +43,7 @@ export default class Model {
     read(payload) {
         try {
             const { cargo, callback } = this.prepare(payload);
-            const readData = this.model.driver.read(cargo);
+            const readData = drivers[this.model.driver].read(cargo);
             if(readData) {
                 this.hydrate(readData).set();
             }
@@ -66,7 +66,7 @@ export default class Model {
     update(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            const updateData = this.model.driver.update(cargo);
+            const updateData = drivers[this.model.driver].update(cargo);
             if(updateData) {
                 this.hydrate(updateData).set();
             }
@@ -83,7 +83,7 @@ export default class Model {
     delete(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            this.model.driver.delete(cargo);
+            drivers[this.model.driver].delete(cargo);
 
             return new ActionGenerator({
                 type: ['model', this.model.name, this.update.name],
@@ -92,6 +92,16 @@ export default class Model {
         } catch(err) {
             throw new Error(err);
         }
+    }
+
+    // Sinks direct changes to model with schema map and dispatches a new read action to update the store.
+    sync() {
+        const schema = new Hydrator().sync(this, this.model.schema);
+        this.model.schema = schema;
+        return new ActionGenerator({
+            type: ['model', this.model.name, 'read'],
+            value: this
+        });
     }
 
     // Eventually do other checking in here
@@ -121,7 +131,7 @@ export default class Model {
     */
     getDriver(driver) {
         if(!driver) {
-            return this.model.driver;
+            return drivers[this.model.driver];
         }
 
         return drivers[driver];
@@ -140,8 +150,9 @@ export default class Model {
     */
     set() {
         for(let key in this.model.schema.maps.storage) {
-            this[key] = this.model.schema.maps.storage[key];
+            if(this.model.schema.maps.storage.hasOwnProperty(key)) {
+                this[key] = this.model.schema.maps.storage[key];
+            }
         }
     }
-
 }

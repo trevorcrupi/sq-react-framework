@@ -16,4 +16,18 @@ export default class Hydrator {
 
         return schema;
     }
+
+    sync(model, schema) {
+        let sync = {};
+        for(let key in model) {
+            if (model.hasOwnProperty(key) && model.model.schema.maps.storage.hasOwnProperty(key)) {
+                if(model[key] !== model.model.schema.maps.storage[key]) {
+                    schema.maps.storage[key] = model[key];
+                }
+                sync[key] = model[key];
+            } 
+        }
+        
+        return schema
+    }
 }

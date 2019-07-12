@@ -17,3 +17,7 @@ export const isObject = value => {
 export const isBoolean = value => {
     return typeof value === 'boolean';
 }
+
+export const isFunction = value => {
+    return typeof value === 'function'; 
+}

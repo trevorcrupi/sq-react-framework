@@ -11,7 +11,12 @@ function App() {
   const { user, dispatch } = useModel('User', new User({
     email: 'tcrupi@purdue.edu',
     name: 'Trevor Crupi'
-  }).read({ table: 'user' }));
+  }).read({ 
+    table: 'user',
+    callback: (user, plugins) => {
+      console.log('Hello from worker!');
+    }
+  }));
 
   return (
     <StateProvider>

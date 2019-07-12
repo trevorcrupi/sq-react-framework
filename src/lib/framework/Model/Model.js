@@ -13,22 +13,17 @@ export default class Model {
         this.model.name   = model.model;
         this.model.driver = model.driver;
         this.model.schema = new Schema(this.model.name, model.schema);
+
         // Initialize model
         this.set();
     }
 
     create(payload) {
         try {
-            const { cargo, callback } = this.prepare(payload);
+            const { cargo } = this.prepare(payload);
             const createData = drivers[this.model.driver].create(cargo);
             if(createData) {
                 this.hydrate(createData).set();
-            }
-
-            if(callback) {
-                //const plugins = plugins || [];
-                console.log('We have a worker!');
-                console.log('We have plugins!');
             }
 
             return new ActionGenerator({
@@ -42,16 +37,10 @@ export default class Model {
 
     read(payload) {
         try {
-            const { cargo, callback } = this.prepare(payload);
+            const { cargo } = this.prepare(payload);
             const readData = drivers[this.model.driver].read(cargo);
             if(readData) {
                 this.hydrate(readData).set();
-            }
-
-            if(callback) {
-                //const plugins = plugins || [];
-                console.log('We have a worker!');
-                console.log('We have plugins!');
             }
 
             return new ActionGenerator({
@@ -108,21 +97,25 @@ export default class Model {
     prepare(payload) {
         let callback = '';
         let plugins = [];
+        this.worker = {
+            callback,
+            plugins
+        };
 
         if(payload.callback) {
-            callback = payload.callback;
+            this.worker.callback = payload.callback;
+            callback = this.worker.callback;
             delete payload.callback;
         }
 
         if(payload.plugins) {
-            plugins = payload.plugins;
+            this.worker.plugins = payload.plugins;
+            plugins = this.worker.plugins;
             delete payload.plugins;
         }
 
         return {
             cargo: payload,
-            callback,
-            plugins
         };
     }
 

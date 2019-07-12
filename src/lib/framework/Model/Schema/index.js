@@ -1,4 +1,4 @@
-import { isArray, isNumber, isString, isObject, isBoolean } from 'lib/framework/helpers/is'; 
+import { isArray, isNumber, isString, isObject, isBoolean, isFunction } from 'lib/framework/helpers/is'; 
 import uuid from 'uuidv4';
 
 export default class Schema {
@@ -14,7 +14,8 @@ export default class Schema {
             model: 6,
             collection: 7,
             uuid: 8,
-            timestamps: 9
+            timestamps: 9,
+            function: 10
         };
         this.model     = model;
         this.schema    = this.validate(schema);
@@ -136,6 +137,10 @@ export default class Schema {
 
         if(this.types[type] === 9) {
             return true;
+        }
+
+        if(this.types[type] === 10) {
+            return isFunction(value);
         }
 
         if(type[0] === type[0].toUpperCase()) {

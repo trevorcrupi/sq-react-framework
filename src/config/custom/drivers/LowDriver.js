@@ -1,9 +1,11 @@
+import { Driver } from 'lib/framework/Driver';
 import low from 'lowdb'
 import LocalStorage from 'lowdb/adapters/LocalStorage'
 
-export default class LowDriver {
+export default class LowDriver extends Driver {
 
     constructor() {
+        super();
         const adapter = new LocalStorage('db')
         this.db = low(adapter)
         this.db.defaults({ user: {}, posts: []}).write();

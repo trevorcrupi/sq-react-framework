@@ -8,11 +8,16 @@ export const UserDataTable = props => {
     return <div>Loading...</div>;
   }
 
+  if(counter < 0) {
+    alert('No going below zero!');
+    setCounter(0);
+  }
+
   return (
     <Fragment>
       <p>This is an example of using state without needing models at all.</p>
-      <button onClick={() => setCounter(counter+1)}>Increment the Count</button><br />
-      <button onClick={() => setCounter(counter-1)}>Decrement the Count</button>
+      <button onClick={() => setCounter(counter+1)}>+</button>
+      <button onClick={() => setCounter(counter-1)}>-</button>
       <br /><br />
       {counter}
       <ul>

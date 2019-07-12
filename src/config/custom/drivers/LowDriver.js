@@ -96,7 +96,7 @@ export default class LowDriver {
         return this.db.get(payload.table).remove(payload.delete).write();
     }
 
-    getAllPosts() {
+    all() {
         return this.db.get('posts').value();
     }
 

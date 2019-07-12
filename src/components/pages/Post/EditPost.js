@@ -26,7 +26,7 @@ export const EditPost = memo(props => {
                 update: { 
                     title: post.title,
                     date: post.date,
-                    text: post.text
+                    text: post.text,
                 }
             }
             dispatch(post.update(query));

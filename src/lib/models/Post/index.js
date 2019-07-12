@@ -1,5 +1,5 @@
 import Model from 'lib/framework/Model';
-import ActionGenerator from 'lib/framework/Model/ActionGenerator';
+// import ActionGenerator from 'lib/framework/ActionGenerator';
 
 export default class Post extends Model {
 
@@ -9,10 +9,11 @@ export default class Post extends Model {
             driver: 'local', 
             schema: {
                 id: ['generate:uuid', post.id],
-                title: ['dynamic', post.title],
+                title: ['string', post.title],
                 author: ['dynamic', post.author],
-                date: ['dynamic', post.date],
-                text: ['dynamic', post.text]
+                date: ['string', post.date],
+                text: ['string', post.text],
+                timestamps: ['generate:timestamps', post.timestamps]
             }
         });
     }
@@ -25,14 +26,19 @@ export default class Post extends Model {
                 title: this.title,
                 author: this.author,
                 date: this.date,
-                text: this.text
+                text: this.text,
+                timestamps: this.timestamps
             },
             callback,
             plugins
         });
     }
 
-    getAllPosts(callback, plugins) {
+    get(value) {
+        return this[value] ? this[value] : '...';
+    }
+
+    /*getAllPosts(callback, plugins) {
         let posts = [];
         const postsArray = super.getDriver().getAllPosts();
         for(let i = 0; i < postsArray.length; i++) {
@@ -43,9 +49,5 @@ export default class Post extends Model {
             type: ['model', 'PostCollection', 'read'],
             value: posts
         }).ready();
-    }
-
-    get(value) {
-        return this[value] ? this[value] : '...';
-    }
+    }*/
 }

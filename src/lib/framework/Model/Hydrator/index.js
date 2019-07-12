@@ -9,6 +9,7 @@ export default class Hydrator {
                 if(schema.checkType(schema.maps.types[key], newData[key])) {
                     schema.maps.storage[key] = newData[key];
                 } else {
+                    schema.maps.storage[key] = newData[key];
                     console.log(`ERROR: Types do not match for ${schema.model} model at key ${key}`);
                 }
             }

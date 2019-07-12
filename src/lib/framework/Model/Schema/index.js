@@ -1,4 +1,4 @@
-import { isArray, isNumber, isString } from 'lib/framework/helpers/is'; 
+import { isArray, isNumber, isString, isObject, isBoolean } from 'lib/framework/helpers/is'; 
 import uuid from 'uuidv4';
 
 export default class Schema {
@@ -13,10 +13,10 @@ export default class Schema {
             boolean: 5,
             model: 6,
             collection: 7,
-            uuid: 8
+            uuid: 8,
+            timestamps: 9
         };
         this.model     = model;
-
         this.schema    = this.validate(schema);
         this.maps      = this.init(this.schema);
     }
@@ -99,9 +99,13 @@ export default class Schema {
 
 
    /*
-        Make sure values are appropriate types
+        Make sure values are appropriate types IF VALUE EXISTS
    */
     checkType(type, value) {
+        if(!value) {
+            return true; 
+        }
+
         if(this.types[type] === 0) {
             return true;
         }
@@ -118,9 +122,27 @@ export default class Schema {
             return isArray(value);
         }
 
+        if(this.types[type] === 4) {
+            return isObject(value);
+        }
+
+        if(this.types[type] === 5) {
+            return isBoolean(value);
+        }
+
         if(this.types[type] === 8) {
             return true;
         }
+
+        if(this.types[type] === 9) {
+            return true;
+        }
+
+        if(type[0] === type[0].toUpperCase()) {
+            return typeof value === 'object' && value.constructor.name === type;
+        }
+
+        throw new Error(`FatalError: ${type} is not a supported schema type. Try using dynamic, or check the docs for more info.`);
     }
 
     /*
@@ -129,6 +151,13 @@ export default class Schema {
     generate(key) {
         if(this.generated[key] === 'uuid') {
             return uuid();
+        }
+
+        if(this.generated[key] === 'timestamps') {
+            return {
+                updated_at: Date.now(),
+                created_at: Date.now()
+            };
         }
 
         throw new Error(`FatalError: ${key} is not supported for automatic generation. Check the docs for more info.`);

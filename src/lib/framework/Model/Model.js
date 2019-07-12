@@ -1,4 +1,4 @@
-import ActionGenerator from './ActionGenerator';
+import ActionGenerator from 'lib/framework/ActionGenerator';
 import Schema from './Schema';
 import Hydrator from './Hydrator';
 

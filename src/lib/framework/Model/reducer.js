@@ -9,7 +9,7 @@ const initialState = {
     Post: new Post({
         id: '',
         title: '',
-        author: 0,
+        author: new User({}),
         date: '',
         text: ''
     })

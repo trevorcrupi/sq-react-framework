@@ -9,6 +9,9 @@ export const ReadPost = props => {
         table: 'posts',
         query: {
             id: props.id
+        },
+        callback: (post, plugins) => {
+          console.log(post);
         }
     }
 

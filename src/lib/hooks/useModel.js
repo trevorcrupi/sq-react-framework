@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import { dataReducer, initialState } from 'lib/framework/Model/reducer';
-import { DynamicWorker } from 'lib/framework/DynamicWorker';
+import { DynamicWorkerQueue } from 'lib/framework/DynamicWorkerQueue';
 
 export default function useModel(model, modelCallback) {
     const [ state, dispatch ] = useReducer(dataReducer, initialState);
@@ -9,21 +9,22 @@ export default function useModel(model, modelCallback) {
     // dispatch the callback given
     useEffect(() => {
         dispatch(modelCallback);
+        // dispatch the DynamicWorkerQueue
+        if(modelCallback['value'].worker && modelCallback['value'].worker.callback) {
+          dispatch(new DynamicWorkerQueue({
+              every: false,
+              action: modelCallback.type,
+              workerCallback: modelCallback['value'].worker.callback,
+              plugins: modelCallback['value'].worker.plugins,
+              workerModel: model,
+              priority: 0
+          }).create());
+        }
 
         return () => {
             console.log('Cleaned up.');
         }
     }, []);
-
-    // Gotta check everything...
-    if(state[model] && state[model].worker && state[model].worker.callback) {
-        dispatch(new DynamicWorker({
-            workerCallback: state[model].worker.callback,
-            plugins: state[model].worker.plugins,
-            workerModel: state[model],
-            priority: 0 
-        }).create());
-    }
 
     modelObjectPayload[model.charAt(0).toLowerCase() + model.slice(1)] = state[model];
     modelObjectPayload.state    = state;

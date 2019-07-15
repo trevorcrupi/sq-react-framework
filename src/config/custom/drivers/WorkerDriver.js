@@ -51,6 +51,13 @@ export default class WorkerDriver extends Driver {
         return true;
     }
 
+    /*
+        Get items from the worker queue
+    */
+    all() {
+      return this.db.get('worker_queue').value();
+    }
+
     read() {}
 
     readFromQueue() {}

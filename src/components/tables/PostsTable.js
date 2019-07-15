@@ -19,7 +19,7 @@ export const PostsTable = props => {
 
     return (
         <Fragment>
-            {posts}            
+            {posts}
         </Fragment>
     );
 };

@@ -12,7 +12,6 @@ export const PopularMovieTable = memo(props => {
   const { movieCollection } = useModel('MovieCollection', new MovieCollection({}).fill(Movie));
 
   if(movieCollection) {
-    console.log(movieCollection);
     movies = movieCollection.movies.map((movie, index) => {
       if(index < 5) {
         return (

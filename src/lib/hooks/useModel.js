@@ -1,4 +1,6 @@
 import { useReducer, useEffect } from 'react';
+
+import { isArray } from 'lib/framework/helpers/is';
 import { dataReducer, initialState } from 'lib/framework/Model/reducer';
 import { DynamicWorkerQueue } from 'lib/framework/DynamicWorkerQueue';
 
@@ -8,6 +10,7 @@ export default function useModel(model, modelCallback) {
 
     // dispatch the callback given
     useEffect(() => {
+
         dispatch(modelCallback);
         // dispatch the DynamicWorkerQueue
         if(modelCallback['value'].worker && modelCallback['value'].worker.callback) {

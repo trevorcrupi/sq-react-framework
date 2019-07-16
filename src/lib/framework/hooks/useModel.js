@@ -1,4 +1,6 @@
 import { useReducer, useEffect } from 'react';
+
+import { isArray } from 'lib/framework/helpers/is';
 import { dataReducer, initialState } from 'lib/framework/Model/reducer';
 import { DynamicWorkerQueue } from 'lib/framework/DynamicWorkerQueue';
 
@@ -11,8 +13,17 @@ export default function useModel(model, modelCallback) {
     /* eslint-disable */
     useEffect(() => {
         async function dispatchAsyncAction(model, modelCallback) {
-          const action = await modelCallback;
-          dispatch(action);
+          let action;
+          if(!isArray(modelCallback)) {
+            action = await modelCallback;
+            dispatch(action);
+          } else {
+            for(let i = 0; i < modelCallback.length; i++) {
+              action = await modelCallback[i];
+              dispatch(action);
+            }
+          }
+
           // dispatch the DynamicWorkerQueue
           if(action['value'].worker && action['value'].worker.callback) {
             dispatch(new DynamicWorkerQueue({

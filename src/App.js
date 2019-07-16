@@ -12,7 +12,7 @@ function App(props) {
     oid: props.context._user.profile.oid,
     userName: props.context._user.userName,
     name: props.context._user.profile.name
-  }).create({ table: 'auth' }));
+  }).create());
 
   return (
     <StateProvider>

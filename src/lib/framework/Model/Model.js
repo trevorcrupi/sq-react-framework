@@ -44,8 +44,12 @@ export default class Model {
 
     async read(payload) {
         try {
+            let readData = payload.readData;
             const { cargo } = this.prepare(payload);
-            const readData = await drivers[this.model.driver].read(cargo);
+
+            if(!payload.readData) {
+              readData = await drivers[this.model.driver].read(cargo);
+            }
 
             if(readData) {
                 this.hydrate(readData).set();

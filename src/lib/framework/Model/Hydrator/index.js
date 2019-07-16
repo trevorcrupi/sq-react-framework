@@ -5,6 +5,11 @@ export default class Hydrator {
     hydrate(schema, newData) {
         if(!isEqual(schema, newData)) {
             for(let key in schema.schema) {
+                /* If there's a value in the schema but not in the newData, don't overwrite it...
+                if(schema.maps.storage[key] !== undefined && !newData[key]) {
+                  newData[key] = schema.maps.storage[key];
+                }
+                */
                 // Make sure types are okay.
                 if(schema.checkType(schema.maps.types[key], newData[key])) {
                     schema.maps.storage[key] = newData[key];
@@ -26,9 +31,9 @@ export default class Hydrator {
                     schema.maps.storage[key] = model[key];
                 }
                 sync[key] = model[key];
-            } 
+            }
         }
-        
+
         return schema
     }
 }

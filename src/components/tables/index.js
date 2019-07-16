@@ -1,7 +1,5 @@
-import { UserDataTable } from './UserDataTable';
-import { PostsTable } from './PostsTable';
+import { PopularMovieTable } from './PopularMovieTable';
 
 export {
-    UserDataTable,
-    PostsTable
+    PopularMovieTable,
 }

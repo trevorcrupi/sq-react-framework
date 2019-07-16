@@ -1,19 +1,4 @@
-import { User, Post } from 'lib/models';
-
-const initialState = {
-    User: new User({
-        id: 0,
-        email: '',
-        name: ''
-    }),
-    Post: new Post({
-        id: '',
-        title: '',
-        author: new User({}),
-        date: '',
-        text: ''
-    })
-};
+import { initialState } from 'state/initialState';
 
 const dataReducer = (state, action) => {
     let newState = {};

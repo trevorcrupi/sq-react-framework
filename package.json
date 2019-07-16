@@ -4,16 +4,18 @@
   "private": true,
   "dependencies": {
     "@reach/router": "^1.2.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
+    "bootstrap": "^4.3.1",
     "localforage": "^1.7.3",
+    "lodash": "^4.17.12",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-adal": "^0.4.23",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "uuidv4": "^4.0.0",
-    "lodash": "^4.17.12"
+    "reactstrap": "^8.0.1",
+    "uuidv4": "^4.0.0"
   },
   "scripts": {
     "start-js": "react-scripts start",

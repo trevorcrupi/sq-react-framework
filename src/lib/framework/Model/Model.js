@@ -18,14 +18,21 @@ export default class Model {
         this.set();
     }
 
-    create(payload) {
+    async create(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            const createData = drivers[this.model.driver].create(cargo);
+
+            if(!cargo.insert) {
+              cargo.insert = this.attachInsertionPayload();
+            }
+
+            const createData = await drivers[this.model.driver].create(cargo);
+
             if(createData) {
                 this.hydrate(createData).set();
             }
 
+            // model.Movie.create
             return new ActionGenerator({
                 type: ['model', this.model.name, this.create.name],
                 value: this
@@ -35,10 +42,11 @@ export default class Model {
         }
     }
 
-    read(payload) {
+    async read(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            const readData = drivers[this.model.driver].read(cargo);
+            const readData = await drivers[this.model.driver].read(cargo);
+
             if(readData) {
                 this.hydrate(readData).set();
             }
@@ -52,10 +60,10 @@ export default class Model {
         }
     }
 
-    update(payload) {
+    async update(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            const updateData = drivers[this.model.driver].update(cargo);
+            const updateData = await drivers[this.model.driver].update(cargo);
             if(updateData) {
                 this.hydrate(updateData).set();
             }
@@ -69,10 +77,10 @@ export default class Model {
         }
     }
 
-    delete(payload) {
+    async delete(payload) {
         try {
             const { cargo } = this.prepare(payload);
-            drivers[this.model.driver].delete(cargo);
+            await drivers[this.model.driver].delete(cargo);
 
             return new ActionGenerator({
                 type: ['model', this.model.name, this.update.name],
@@ -127,7 +135,11 @@ export default class Model {
             return drivers[this.model.driver];
         }
 
-        return drivers[driver];
+        if(drivers[driver]) {
+          return drivers[driver];
+        }
+
+        throw new Error(`Driver ${driver} does not exist.`);
     }
 
     /*
@@ -147,5 +159,19 @@ export default class Model {
                 this[key] = this.model.schema.maps.storage[key];
             }
         }
+    }
+
+    /*
+      Automatically attach current object attributes if nothing is given for insert
+    */
+    attachInsertionPayload() {
+      let insert = {};
+      for(let key in this) {
+        if(key !== 'model' && key !== 'worker') {
+          insert[key] = this[key];
+        }
+      }
+
+      return insert;
     }
 }

@@ -4,22 +4,21 @@ import Navigation from './components/layout/Navigation';
 import 'assets/custom-styles.css';
 
 import { Model } from 'lib/framework/context';
-import { useModel } from 'lib/hooks';
-import { User } from 'lib/models';
+import { useModel } from 'lib/framework/hooks';
+import { Auth } from 'lib/models';
 
-function App() {
-  const { user, dispatch } = useModel('User', new User({
-    email: 'tcrupi@purdue.edu',
-    name: 'Trevor Crupi'
-  }).read({
-    table: 'user'
-  }));
+function App(props) {
+  const { auth, dispatch } = useModel('Auth', new Auth({
+    oid: props.context._user.profile.oid,
+    userName: props.context._user.userName,
+    name: props.context._user.profile.name
+  }).create({ table: 'auth' }));
 
   return (
     <StateProvider>
       <Model.Provider value={dispatch}>
         <div className='App'>
-          <Navigation user={user} />
+          <Navigation user={auth} />
         </div>
       </Model.Provider>
     </StateProvider>

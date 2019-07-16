@@ -1,5 +1,5 @@
-import PostCollection from './PostCollection';
+import MovieCollection from './MovieCollection';
 
 export {
-    PostCollection
+  MovieCollection
 }

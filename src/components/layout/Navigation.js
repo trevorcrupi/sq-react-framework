@@ -1,32 +1,17 @@
 import React from 'react';
-import { Router, Link, navigate } from '@reach/router';
+import { Router, navigate } from '@reach/router';
+import { Header } from './Header';
 import { Home } from '../pages/Home';
 import { About } from '../pages/About';
-import { AddPost, ReadPost, EditPost } from '../pages/Post';
+import { ReadMovie } from '../pages/Movie/ReadMovie';
 
 const Navigation = (props, { children }) => (
   <div>
-    <ul>
-      <li>
-        <Link to='/'>Home</Link>
-      </li>
-      <li>
-        <Link to='/about'>
-          About
-        </Link>
-      </li>
-      <li>
-        <Link to='/post/add'>
-          Add a Post
-        </Link>
-      </li>
-    </ul>
+    <Header navigate={navigate} user={props.user} />
     <Router>
-      <Home path='/' user={props.user} />
-      <About path='/about' user={props.user} />
-      <AddPost path='/post/add' user={props.user} navigate={navigate} />
-      <ReadPost path='/post/:id' user={props.user} />
-      <EditPost path='/post/edit/:id' user={props.user} navigate={navigate} />
+      <Home path='/' />
+      <About path='/about' />
+      <ReadMovie path='movie/:id' />
     </Router>
   </div>
 );

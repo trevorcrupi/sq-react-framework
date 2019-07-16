@@ -13,10 +13,10 @@ export default class Collection {
         this.collection.plural = collection.plural;
     }
 
-    fill(Model) {
+    async fill(Model) {
         try {
             let fills = [];
-            const collectionData = drivers[this.collection.driver].all();
+            const collectionData = await drivers[this.collection.driver].all();
             if(collectionData) {
                 if(!isArray(collectionData)) {
                     throw new Error(`FatalError: Your all() method in your driver MUST return an array. Define your own fill() method in your collection if this is unacceptable.`);
@@ -31,13 +31,13 @@ export default class Collection {
                 pluralForm = lowercaseFirst(pluralForm);
                 this[pluralForm] = fills;
             }
-            
+
             return new ActionGenerator({
                 type: ['model', this.collection.name, 'read'],
                 value: this
             }).ready();
         } catch(err) {
             throw new Error(err);
-        }        
+        }
     }
 }

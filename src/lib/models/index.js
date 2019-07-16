@@ -1,7 +1,7 @@
-import User from './User';
-import Post from './Post';
+import Movie from './Movie';
+import Auth from './Auth';
 
 export {
-    User,
-    Post
+  Auth,
+  Movie
 }

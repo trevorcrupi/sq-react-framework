@@ -1,4 +1,4 @@
-import { isArray, isNumber, isString, isObject, isBoolean, isFunction } from 'lib/framework/helpers/is'; 
+import { isArray, isNumber, isString, isObject, isBoolean, isFunction } from 'lib/framework/helpers/is';
 import uuid from 'uuidv4';
 
 export default class Schema {
@@ -75,9 +75,9 @@ export default class Schema {
                 types[key] = typeArray[1];
                 this.generated[key] = typeArray[1];
             }
-            
+
         }
-        return types;       
+        return types;
     }
 
     /*
@@ -104,7 +104,7 @@ export default class Schema {
    */
     checkType(type, value) {
         if(!value) {
-            return true; 
+            return true;
         }
 
         if(this.types[type] === 0) {

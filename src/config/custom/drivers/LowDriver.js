@@ -8,7 +8,7 @@ export default class LowDriver extends Driver {
         super();
         const adapter = new LocalStorage('db')
         this.db = low(adapter)
-        this.db.defaults({ user: {}, posts: []}).write();
+        this.db.defaults({ init: [], movies: [], auth: {} }).write();
     }
 
     /*
@@ -21,37 +21,33 @@ export default class LowDriver extends Driver {
             }
         }
     */
-    create(payload) {
+    async create(payload) {
         if(!payload.table) {
             throw new Error('No table specified in payload.');
         }
 
-        if(!payload.insert.id) {
-            throw new Error('No id specified in payload');
-        }
-
-        if(payload.table === 'user') {
+        if(payload.table === 'auth') {
             return this.setObjectTable(payload.table, payload.insert);
         }
 
         this.db.get(payload.table).push(payload.insert).write();
-        return payload.insert; 
+        return payload.insert;
     }
 
     /*
     {
         table: 'posts',
         query: {
-            userId: 1
+            authId: 1
         }
     }
     */
-    read(payload) {
+    async read(payload) {
         if(!payload.table) {
             throw new Error('No table specified in payload');
         }
 
-        if(payload.table === 'user') {
+        if(payload.table === 'auth') {
             return this.db.get(payload.table).value();
         }
 
@@ -69,12 +65,12 @@ export default class LowDriver extends Driver {
         }
     }
     */
-    update(payload) {
+    async update(payload) {
         if(!payload.table) {
             throw new Error('No table specified in payload');
         }
 
-        if(payload.table === 'user') {
+        if(payload.table === 'auth') {
             return this.db.set(payload.table + '.' + payload.query, payload.update).value();
         }
 
@@ -90,15 +86,19 @@ export default class LowDriver extends Driver {
         }
     }
     */
-    delete(payload) {
+    async delete(payload) {
         if(!payload.table) {
             throw new Error('No table specified in payload');
+        }
+
+        if(payload.table === 'auth') {
+            return this.db.set('auth', {}).write();
         }
 
         return this.db.get(payload.table).remove(payload.delete).write();
     }
 
-    all() {
+    async all() {
         return this.db.get('posts').value();
     }
 

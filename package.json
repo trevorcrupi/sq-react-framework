@@ -11,7 +11,7 @@
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-adal": "^0.4.23",
+    "react-adal": "^0.5.1",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.1",

@@ -13,7 +13,7 @@
     "react": "^16.8.6",
     "react-adal": "^0.4.23",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "reactstrap": "^8.0.1",
     "uuidv4": "^4.0.0"
   },
